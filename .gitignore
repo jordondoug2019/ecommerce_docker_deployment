@@ -1,0 +1,9 @@
+# Ignore all .env files anywhere in the project
+**/.env
+
+# Other common Terraform ignores
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform.lock.hcl
