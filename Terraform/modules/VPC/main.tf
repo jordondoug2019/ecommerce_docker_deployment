@@ -82,7 +82,7 @@ resource "aws_eip" "nat_eip_AZ2" {
 #Nat Gateway
 resource "aws_nat_gateway" "nat_gw_AZ1" {
   allocation_id = aws_eip.nat_eip_AZ1.id
-  subnet_id     = aws_subnet.public_subnet_1
+  subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
     Name = "Nat Gateway-AZ1"
@@ -94,7 +94,7 @@ resource "aws_nat_gateway" "nat_gw_AZ1" {
 }
 resource "aws_nat_gateway" "nat_gw_AZ2" {
   allocation_id = aws_eip.nat_eip_AZ2
-  subnet_id     = aws_subnet.public_subnet_2
+  subnet_id     = aws_subnet.public_subnet_2.id
 
   tags = {
     Name = "Nat Gateway-AZ2"

@@ -29,12 +29,28 @@ newgrp docker
 
 #Dockerhub login
 # Set credentials
-source .env
 
 # Login to Docker
-echo "$DOCKER_ACCESS_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin || {
+echo "$docker_password" | docker login -u "$docker_username" --password-stdin || {
   echo "Docker login failed!" >&2
   exit 1
 }
 
 echo "Docker login successful!"
+
+#create docker compose file
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Creating app directory..."
+mkdir -p /app
+cd /app
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Created and moved to /app"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Creating docker-compose.yml..."
+cat > docker-compose.yml <<EOF
+${docker_compose}
+EOF
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] docker-compose.yml created"
+
+docker-compose pull 
+
+docker-compose up -d --force-recreate 
+
+docker logout 

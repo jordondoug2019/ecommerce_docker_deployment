@@ -15,3 +15,12 @@ variable "public_subnet_id" {
   description = "Subnet ID where the instance will be launched"
   type        = string
 }
+
+variable "dockerhub_username" {
+  type        = string
+  sensitive   = true
+}
+variable "dockerhub_password" {
+  type        = string
+  sensitive   = true
+}

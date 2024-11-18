@@ -104,7 +104,14 @@ resource "aws_instance" "ecommerce_bastion_az1"  {
   key_name          = "az1keypair"               
    # The key pair name for SSH access to the instance.
   subnet_id = aws_subnet.public_subnet_1.id
-  user_data = file("${path.module}/jenkins.sh")
+user_data = base64encode(templatefile("${path.module}/deploy.sh", {
+    rds_endpoint = aws_db_instance.main.endpoint,
+    docker_user = var.dockerhub_username,
+    docker_pass = var.dockerhub_password,
+    docker_compose = templatefile("${path.module}/compose.yaml", {
+      rds_endpoint = aws_db_instance.main.endpoint
+    })
+  }))
   # Tagging the resource with a Name label. Tags help in identifying and organizing resources in AWS.
   tags = {
     "Name" : "ecommerce_bastion_az1"         
@@ -126,11 +133,22 @@ resource "aws_instance" "ecommerce_app_az1"  {
   key_name          = "az1keypair"               
    # The key pair name for SSH access to the instance.
   subnet_id = aws_subnet.private_subnet_1.id
-  user_data = file("${path.module}/jenkins.sh")
+ user_data = base64encode(templatefile("${path.module}/deploy.sh", {
+    rds_endpoint = aws_db_instance.rds_endp
+    docker_user = var.dockerhub_username,
+    docker_pass = var.dockerhub_password,
+    docker_compose = templatefile("${path.module}/compose.yaml", {
+      rds_endpoint = aws_db_instance.main.endpoint
+    })
+  }))
   # Tagging the resource with a Name label. Tags help in identifying and organizing resources in AWS.
   tags = {
     "Name" : "ecommerce_app_az1"         
   }
+  depends_on = [
+    aws_db_instance.main,
+    aws_nat_gateway.main
+  ]
 }
 
 
@@ -151,7 +169,6 @@ resource "aws_instance" "ecommerce_bastion_az2"  {
   key_name          = "az2keypair"               
    # The key pair name for SSH access to the instance.
   subnet_id = aws_subnet.public_subnet_2.id
-  user_data = file("${path.module}/jenkins.sh")
   # Tagging the resource with a Name label. Tags help in identifying and organizing resources in AWS.
   tags = {
     "Name" : "ecommerce_bastion_az2"         
@@ -173,11 +190,23 @@ resource "aws_instance" "ecommerce_app_az2"  {
   key_name          = "az2keypair"               
    # The key pair name for SSH access to the instance.
   subnet_id = aws_subnet.private_subnet_2.id
-  user_data = file("${path.module}/jenkins.sh")
+  user_data = base64encode(templatefile("${path.module}/deploy.sh", {
+    rds_endpoint = aws_db_instance.rds_endp
+    docker_user = var.dockerhub_username,
+    docker_pass = var.dockerhub_password,
+    docker_compose = templatefile("${path.module}/compose.yaml", {
+      rds_endpoint = aws_db_instance.main.endpoint
+    })
+  }))
+  
   # Tagging the resource with a Name label. Tags help in identifying and organizing resources in AWS.
   tags = {
     "Name" : "ecommerce_app_az2"         
   }
+   depends_on = [
+    aws_db_instance.main,
+    aws_nat_gateway.main
+  ]
 }
 
 
