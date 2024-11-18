@@ -5,11 +5,7 @@ variable "instance_type" {
   type        = string
 }
 
-#Key Pair Variable 
-variable "key_name" {
-  description = "Key pair name for SSH access"
-  type        = string
-}
+
 # Public subnet variable
 variable "public_subnet_id" {
   description = "Subnet ID where the instance will be launched"

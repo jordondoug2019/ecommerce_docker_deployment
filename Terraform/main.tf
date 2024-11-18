@@ -23,6 +23,4 @@ public_subnet_id = module.VPC.public_subnet_ids
 dockerhub_username = var.dockerhub_username
 dockerhub_password = var.dockerhub_password
 instance_type = var.instance_type
-key_name= var.key_name
-
 }
