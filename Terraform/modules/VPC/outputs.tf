@@ -7,5 +7,9 @@ output "private_subnet_ids" {
 }
 
 output "dev_vpc_id" {
-  value= aws_vpc.dev_vpc_id.id 
+  value= data.aws_vpc.dev_vpc_id.id 
+}
+output "production_vpc" {
+  value = aws_vpc.production_vpc.id 
+  
 }
