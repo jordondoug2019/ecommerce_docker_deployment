@@ -136,7 +136,7 @@ resource "aws_route_table" "private_route_table_AZ1" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.production_igw.id
+    nat_gateway_id = aws_nat_gateway.nat_gw_AZ1.id
   }
 
 
@@ -150,7 +150,7 @@ resource "aws_route_table" "private_route_table_AZ2" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.production_igw.id
+    nat_gateway_id = aws_nat_gateway.nat_gw_AZ2.id 
   }
 
 
@@ -159,12 +159,46 @@ resource "aws_route_table" "private_route_table_AZ2" {
   }
 }
 resource "aws_route_table_association" "private_route_table_assoc_az1" {
-  gateway_id     = aws_nat_gateway.nat_gw_AZ1.id
-  route_table_id = aws_route_table.private_route_table_AZ1.id
+    subnet_id      = aws_subnet.private_subnet_1.id
+    route_table_id = aws_route_table.private_route_table_AZ1.id
 }
 
 resource "aws_route_table_association" "private_route_table_assoc_az2" {
-  gateway_id     = aws_nat_gateway.nat_gw_AZ2.id
+  subnet_id      = aws_subnet.private_subnet_2.id
   route_table_id = aws_route_table.private_route_table_AZ2.id
 }
 
+#VPC Peering
+# main.tf
+
+# Data source to get information about the existing Development VPC
+data "aws_vpc" "development_vpc" {
+  id = "vpc-070b9c31d56c51e71"  # Use the variable for the VPC ID
+}
+
+#Creating VPC Peering Connection 
+resource "aws_vpc_peering_connection" "dev_prod_peering" {
+  peer_vpc_id = data.aws_vpc.development_vpc.id
+  vpc_id = aws_vpc.production_vpc.id
+  peer_region = "us-east-1"
+
+  auto_accept = true
+
+  tags = {
+    Name = "Development_Production_VPCPeering"
+  }
+}
+
+# Update Route Tables for Production VPC
+resource "aws_route" "production_to_development_route" {
+  route_table_id         = aws_route_table.private_route_table_AZ1.id
+  destination_cidr_block = data.aws_vpc.development_vpc.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.dev_prod_peering.id
+}
+
+# Update Route Tables for Development VPC
+resource "aws_route" "development_to_production_route" {
+  route_table_id         = aws_route_table.private_route_table_AZ1.id
+  destination_cidr_block = aws_vpc.production_vpc.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.dev_prod_peering.id
+}

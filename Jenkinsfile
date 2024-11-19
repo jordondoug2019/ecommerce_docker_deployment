@@ -10,7 +10,24 @@ pipeline {
       agent any
       steps {
         sh '''#!/bin/bash
-        <code to build the application>
+         # Create and activate virtual environment for backend
+            python -m venv venv
+            source venv/bin/activate
+
+            # Install backend dependencies
+            cd backend
+            pip install -r requirements.txt
+            python manage.py collectstatic --noinput
+            cd ..
+
+            # Install frontend dependencies and build
+            cd frontend
+            npm install
+            npm run build
+            cd ..
+
+            # Deactivate virtual environment
+            deactivate
         '''
       }
     }

@@ -10,7 +10,7 @@ provider "aws" {
 }
 module "VPC" {
   source="./modules/VPC"
-
+ dev_vpc_id = data.aws_vpc.dev_vpc.id
 }
 module RDS{
 source= "./modules/RDS"

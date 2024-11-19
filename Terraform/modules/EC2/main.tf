@@ -134,7 +134,7 @@ resource "aws_instance" "ecommerce_app_az1"  {
    # The key pair name for SSH access to the instance.
   subnet_id = aws_subnet.private_subnet_1.id
  user_data = base64encode(templatefile("${path.module}/deploy.sh", {
-    rds_endpoint = aws_db_instance.rds_endp
+    rds_endpoint = aws_db_instance.main.endpoint
     docker_user = var.dockerhub_username,
     docker_pass = var.dockerhub_password,
     docker_compose = templatefile("${path.module}/compose.yaml", {
