@@ -50,14 +50,14 @@ pipeline {
         
         // Build and push backend
         sh '''
-          docker build -t jordondouglas/ecommerce_backend:latest -f Dockerfile.backend .
-          docker push jordondouglas/ecommerce_backend:latest
+          docker build -t jordondouglas/backend_ecommerce:latest -f Dockerfile.backend .
+          docker push jordondouglas/backend_ecommerce:latest
         '''
         
         // Build and push frontend
         sh '''
-          docker build -t jordondouglas/ecommerce_frontend:latest -f Dockerfile.frontend .
-          docker push jordondouglas/ecommerce_frontend:latest
+          docker build -t jordondouglas/frontend_ecommerce:latest -f Dockerfile.frontend .
+          docker push jordondouglas/frontend_ecommerce:latest
         '''
       }
     }
