@@ -10,24 +10,9 @@ pipeline {
       agent any
       steps {
         sh '''#!/bin/bash
-         # Create and activate virtual environment for backend
-            python -m venv venv
-            source venv/bin/activate
-
-            # Install backend dependencies
-            cd backend
-            pip install -r requirements.txt
-            python manage.py collectstatic --noinput
-            cd ..
-
-            # Install frontend dependencies and build
-            cd frontend
-            npm install
-            npm run build
-            cd ..
-
-            # Deactivate virtual environment
-            deactivate
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r ./backend/requirements.txt
         '''
       }
     }
@@ -65,14 +50,14 @@ pipeline {
         
         // Build and push backend
         sh '''
-          docker build -t <backend image tagged for dockerhub>:latest -f Dockerfile.backend .
-          docker push <backend image tagged for dockerhub:latest
+          docker build -t jordondouglas/ecommerce_backend:latest -f Dockerfile.backend .
+          docker push jordondouglas/ecommerce_backend:latest
         '''
         
         // Build and push frontend
         sh '''
-          docker build -t <frontent image tagged for dockerhub>:latest -f Dockerfile.frontend .
-          docker push <frontend image tagged for dockerhub>:latest
+          docker build -t jordondouglas/ecommerce_frontend:latest -f Dockerfile.frontend .
+          docker push jordondouglas/ecommerce_frontend:latest
         '''
       }
     }
