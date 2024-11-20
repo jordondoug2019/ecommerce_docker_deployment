@@ -12,7 +12,7 @@ module "VPC" {
   source="./modules/VPC"
  dev_vpc_id = data.aws_vpc.dev_vpc.id
 }
-module RDS{
+module "RDS" {
 source= "./modules/RDS"
 db_password = var.db_password
 }
@@ -23,7 +23,6 @@ public_subnet_id = module.VPC.public_subnet_ids
 dockerhub_username = var.dockerhub_username
 dockerhub_password = var.dockerhub_password
 instance_type = var.instance_type
-  depends_on = [module.RDS]
 }
 
 module "ALB" {
@@ -31,5 +30,4 @@ module "ALB" {
   production_vpc = module.VPC.production_vpc
   app_az1_id = module.EC2.app_az1_id
   app_az2_id = module.EC2.app_az2_id
-   depends_on = [module.EC2]
 }

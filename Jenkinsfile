@@ -12,6 +12,7 @@ pipeline {
         sh '''#!/bin/bash
         python -m venv venv
         source venv/bin/activate
+        pip install pip --upgrade
         pip install -r ./backend/requirements.txt
         '''
       }
@@ -21,7 +22,8 @@ pipeline {
       agent any
       steps {
         sh '''#!/bin/bash
-        <code to activate virtual environment>
+        python -m venv venv
+        source venv/bin/activate
         pip install pytest-django
         python backend/manage.py makemigrations
         python backend/manage.py migrate

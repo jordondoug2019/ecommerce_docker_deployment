@@ -60,7 +60,7 @@ newgrp docker
 # Set credentials
 
 # Login to Docker
-echo "$docker_password" | docker login -u "$docker_username" --password-stdin || {
+echo "${dockerhub_password}" | docker login -u "${dockerhub_username}" --password-stdin || {
   echo "Docker login failed!" >&2
   exit 1
 }
