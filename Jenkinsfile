@@ -3,7 +3,6 @@ pipeline {
 
   environment {
     DOCKER_CREDS = credentials('docker-hub-credentials')
-    DJANGO_SETTINGS_MODULE= 'backend.myproject.settings'
   }
 
   stages {
@@ -25,9 +24,6 @@ pipeline {
         sh '''#!/bin/bash
         source venv/bin/activate
         pip install pytest-django
-       
-
-        export DJANGO_SETTINGS_MODULE=backend.myproject.settings
 
         python backend/manage.py makemigrations
         python backend/manage.py migrate
