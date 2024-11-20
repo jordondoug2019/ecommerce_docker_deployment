@@ -48,18 +48,18 @@ pipeline {
     stage('Build & Push Images') {
       agent { label 'build-node' }
       steps {
-        sh 'echo ${DOCKER_CREDS_PSW} | docker login -u ${DOCKER_CREDS_USR} --password-stdin'
+        sh 'echo ${DOCKER_CREDS_PSW} | docker login -u ${DOCKER_CREDS_USR} --password-stdin' docker.io 
         
         // Build and push backend
         sh '''
           sudo docker build -t jordondouglas/backend_ecommerce:latest -f Dockerfile.backend .
-          sudo docker push jordondouglas/backend_ecommerce:latest
+          sudo su docker push jordondouglas/backend_ecommerce:latest
         '''
         
         // Build and push frontend
         sh '''
          sudo docker build -t jordondouglas/frontend_ecommerce:latest -f Dockerfile.frontend .
-         sudo docker push jordondouglas/frontend_ecommerce:latest
+         sudo su docker push jordondouglas/frontend_ecommerce:latest
         '''
       }
     }
