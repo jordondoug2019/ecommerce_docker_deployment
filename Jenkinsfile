@@ -48,7 +48,6 @@ pipeline {
     stage('Build & Push Images') {
       agent { label 'build-node' }
       steps {
-         withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
         sh 'echo ${DOCKER_CREDS_PSW} | docker login -u ${DOCKER_CREDS_USR} --password-stdin'
         
         // Build and push backend
