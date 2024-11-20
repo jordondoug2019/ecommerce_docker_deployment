@@ -10,10 +10,10 @@ RUN pip install django-environ
 
 RUN python manage.py makemigrations account
 
-RUN  python manage.py makemigrations payments
+RUN python manage.py makemigrations payments
 
 RUN python manage.py makemigrations product
 
 EXPOSE 8000
 
-ENTRYPOINT [ "python", "manage.py", "runserver". "0.0.0.0:8000" ]
+CMD [ "python", "manage.py", "runserver". "0.0.0.0:8000" ]

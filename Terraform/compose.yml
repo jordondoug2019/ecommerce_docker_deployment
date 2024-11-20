@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: jordondouglas/backend_ecommerece:latest
+    image: jordondouglas/backend_ecommerce:latest
     environment:
       - DB_HOST=${rds_endpoint}
     ports:
