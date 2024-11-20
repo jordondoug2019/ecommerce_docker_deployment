@@ -37,7 +37,7 @@ pipeline {
       steps {
         sh '''
           # Only clean Docker system
-          docker system prune -f
+         sudo docker system prune -f
           
           # Safer git clean that preserves terraform state
           git clean -ffdx -e "*.tfstate*" -e ".terraform/*"
