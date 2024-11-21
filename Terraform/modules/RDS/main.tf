@@ -3,7 +3,7 @@ resource "aws_db_instance" "main" {
   engine            = "postgres"
   engine_version    = "13.3"  # Use the desired version
   instance_class    = "db.t3.micro"  # Choose an instance class based on your needs
-  allocated_storage = 10  # Adjust the storage size as necessary (in GB)
+  allocated_storage = 20  # Adjust the storage size as necessary (in GB)
   db_name           = "ecommerce"
   username          = "userdb"
   password          = var.db_password  # Replace with a secure password or use secrets management
